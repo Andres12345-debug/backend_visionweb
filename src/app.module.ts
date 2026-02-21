@@ -6,16 +6,24 @@ import { PublicoModule } from './modulos/publico/publico.module';
 import { ConexionModule } from './config/conexion/conexion.module';
 import { ConfigModule } from '@nestjs/config';
 import { Seguridad } from './middleware/seguridad/seguridad/seguridad';
+import { RolesModule } from './modulos/privado/roles/roles.module';
+import { SeedService } from './config/seed.service';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true,envFilePath:".env"}), ConexionModule, PublicoModule, PrivadoModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+    ConexionModule,
+    PublicoModule,
+    PrivadoModule,
+    RolesModule // 👈 importante
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SeedService], // 👈 agregar aquí
 })
-export class AppModule implements NestModule{
+export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
-
-   consumer.apply(Seguridad).forRoutes({path: '/privado/*', method: RequestMethod.ALL});
-  
-    }
+    consumer
+      .apply(Seguridad)
+      .forRoutes({ path: '/privado/*', method: RequestMethod.ALL });
+  }
 }
