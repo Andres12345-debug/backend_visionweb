@@ -1,0 +1,114 @@
+###### Creamos el proyecto ######
+    nest new backend_visionweb
+###### installacion de paquetes #######
+    npm i typeorm
+    npm i @nestjs/config
+    npm i @nestjs/typeorm     
+    npm install jsonwebtoken
+    npm i @types/jsonwebtoken --save-dev
+### privados  ######
+    nest g mo modulos/privado
+    nest g mo modulos/privado
+    nest g mo modulos/privado/usuarios
+    nest g s modulos/privado/usuarios --no-spec
+    nest g co modulos/privado/usuarios --no-spec
+
+    nest g mo modulos/privado/roles
+    nest g s modulos/privado/roles --no-spec
+    nest g co modulos/privado/roles --no-spec
+### privados  ######
+    nest g mo modulos/publico
+    nest g mo modulos/publico/accesos
+    nest g s modulos/publico/accesos --no-spec
+    nest g co modulos/publico/accesos --no-spec
+
+    nest g mo modulos/publico/registros
+    nest g s modulos/publico/registros --no-spec
+    nest g co modulos/publico/registros --no-spec
+### configuracion del App.Module  ######
+    imports: [ConfigModule.forRoot({isGlobal: true,envFilePath:".env"}), ConexionModule, PublicoModule, PrivadoModule],
+#### Creamos config/conexión ### 
+nest g module config/conexion
+            
+        @Global()
+        @Module({
+        imports: [],
+        providers: [
+            {
+            provide: DataSource,
+            inject: [],
+            useFactory: async () => {
+                try {
+                const poolConexion = new DataSource({
+                    type: 'postgres',
+                    host: String(process.env.HOST),
+                    port: Number(process.env.PORT),
+                    username: String(process.env.USER),
+                    password: String(process.env.CLAVE),
+                    database: String(process.env.BASE_DATOS),
+                    synchronize: true,
+                    logging: true,
+                    namingStrategy: new SnakeNamingStrategy(),
+                    entities: [Acceso, Publicacion, Rol, Usuario], // Aquí debes agregar tus entidades
+                });
+
+                await poolConexion.initialize();
+                console.log("Conexión a la base de datos exitosa."+String(process.env.DATA_BASE));
+
+                return poolConexion;
+                } catch (miError) {
+                console.log("Falló al realizar la conexión");
+                throw miError;
+                }
+            },
+            },
+        ],
+        exports: [DataSource],
+        })
+        export class 
+        ConexionModule {}
+#### Creacion de modelos ### 
+	nest g cl modelos/usuario --no-spec
+  	nest g cl modelos/rol --no-spec
+   	nest g cl modelos/acceso --no-spec
+#### Middleware #####
+    nest g cl middleware/seguridad/seguridad --no-spec
+### Arreglamos el Main.ts ####
+        
+	async function bootstrap() {
+        const puerto=Number(process.env.PUERTO_SERVIDOR);
+
+        const app = await NestFactory.create(AppModule);
+        app.enableCors();
+        await app.listen(puerto,()=>{
+            console.log(`Servidor funcionando puerto: `+puerto);
+        });
+        }
+        bootstrap();	
+
+### appp.module para configurar el uso del middleware ###
+export class AppModule implements NestModule{
+  public configure(consumer: MiddlewareConsumer) {
+
+   consumer.apply(Seguridad).forRoutes({path: '/privado/*', method: RequestMethod.ALL});
+  
+    }
+}
+### Al empezar para las rutas del privado y publico ##
+const routes: Routes = [
+{
+  path: 'privado',
+  children: [UsuariosModule, MateriasModule]
+}
+]
+### Register va si o si ###
+@Module({
+  imports: [
+    UsuariosModule, 
+    MateriasModule,
+    RouterModule.register(routes),
+
+  ],
+  exports: [RouterModule],
+})
+
