@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Rol } from 'src/modelos/rol/rol';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class RolesService {
@@ -113,4 +113,6 @@ export class RolesService {
             throw new HttpException("fallo al eliminar el rol", HttpStatus.BAD_REQUEST)
         }
     }
+
+
 }

@@ -23,7 +23,8 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+git clone https://github.com/Andres12345-debug/backend_visionweb.git
+cd backend_visionweb
 
 ## Project setup
 
