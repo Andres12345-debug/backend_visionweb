@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: .
+    container_name: visionweb-backend
+    ports:
+      - "3550:3550"   # Tu app corre en 3550 según tu .env
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      DB_HOST: db   # 👈 IMPORTANTE
+      DB_PORT: 5432
+      DB_NAME: bd_visionweb
+      DB_USER: andres
+      DB_PASSWORD: andres527
+      PUERTO_SERVIDOR: 3550
+
+  db:
+    image: postgres:15
+    container_name: visionweb_bd
+    environment:
+      POSTGRES_USER: andres
+      POSTGRES_PASSWORD: andres527
+      POSTGRES_DB: bd_visionweb
+    ports:
+      - "5432:5432"   # opcional si quieres conectarte desde tu PC
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:
