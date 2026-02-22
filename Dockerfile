@@ -1,23 +1,33 @@
-# Imagen base oficial de Node.js
-FROM node:18
+# ---------- ETAPA 1: BUILD ----------
+FROM node:20-alpine AS builder
 
-# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos de definición de dependencias
+# Copiar dependencias
 COPY package*.json ./
-
-# Instalar dependencias
 RUN npm install
 
-# Copiar el resto del código
+# Copiar código fuente
 COPY . .
 
-# Compilar el código TypeScript
+# Compilar proyecto
 RUN npm run build
 
-# Exponer el puerto NestJS (ajústalo si usas otro)
-EXPOSE 3000
 
-# Comando para iniciar la app en modo producción
-CMD ["npm", "run", "start:prod"]
+# ---------- ETAPA 2: PRODUCCIÓN ----------
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copiar solo dependencias necesarias
+COPY package*.json ./
+RUN npm install --omit=dev
+
+# Copiar solo el build compilado
+COPY --from=builder /app/dist ./dist
+
+# Exponer puerto (tu proyecto usa 3550)
+EXPOSE 3550
+
+# Ejecutar aplicación
+CMD ["node", "dist/main.js"]
