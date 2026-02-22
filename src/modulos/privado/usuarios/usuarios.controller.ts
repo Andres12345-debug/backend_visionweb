@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Req } from '@nestjs/common';
 import { Usuario } from 'src/modelos/usuario/usuario';
 import { UsuariosService } from './usuarios.service';
 
@@ -42,5 +42,15 @@ export class UsuariosController {
         }
 
         return this.usuarioService.actualizar(objActualizar, codigo);
+    }
+
+     @Delete("/delete/:cod_usuario")
+    public borrarProducto(@Body() objBorrar: Usuario, @Param() parametros: any): any {
+        const codigo: number = Number(parametros.cod_usuario);
+        if (!isNaN(codigo)) {
+            return this.usuarioService.eliminar(objBorrar, codigo);
+        } else {
+            return new HttpException("fallo al borrar el usuario", HttpStatus.BAD_REQUEST)
+        }
     }
 }
