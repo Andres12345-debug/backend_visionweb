@@ -1,56 +1,51 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Req } from '@nestjs/common';
-import { Usuario } from 'src/modelos/usuario/usuario';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Req
+} from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
+import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
-    constructor(private readonly usuarioService: UsuariosService) { }
 
+  constructor(private readonly usuarioService: UsuariosService) {}
 
-    @Get('/todos')
-    public obtenerProductos(): any {
-        return this.usuarioService.consultar();
-    }
+  @Get('/todos')
+  public obtenerUsuarios() {
+    return this.usuarioService.consultar();
+  }
 
-   @Get('/perfil')
-    public async obtenerMiPerfil(@Req() req: Request): Promise<any> {
-        const datosUsuario = (req as any).datosUsuario;
+  @Get('/perfil')
+  public async obtenerMiPerfil(@Req() req: any) {
+    return {
+      mensaje: 'Perfil obtenido correctamente',
+      usuario: req.datosUsuario,
+    };
+  }
 
-        // Log para ver exactamente qué está llegando
-        console.log("👉 Datos que llegan al controlador /perfil:", datosUsuario);
+  @Post('/agregar')
+  public registrarUsuario(@Body() datos: CrearUsuarioDto) {
+    return this.usuarioService.registrar(datos);
+  }
 
-        return {
-            mensaje: 'Perfil obtenido correctamente',
-            usuario: datosUsuario, // Aquí sale la info del usuario
-        };
-    }
+  @Put('/actualizar/:id')
+  public actualizar(
+    @Param('id') id: number,
+    @Body() datos: CrearUsuarioDto
+  ) {
+    return this.usuarioService.actualizar(datos, id);
+  }
 
-    @Post("/agregar")
-    public registrarProducto(@Body() objUsu: Usuario): any {
-        return this.usuarioService.registrar(objUsu);
-    }
-    @Put("/actualizar")
-    public async actualizarPerfil(
-        @Req() req: Request,
-        @Body() objActualizar: Usuario
-    ): Promise<any> {
-        const datosUsuario = (req as any).datosUsuario;
-        const codigo = datosUsuario.codUsuario || datosUsuario.id || datosUsuario.userId;
-
-        if (!codigo) {
-            throw new HttpException("Usuario no válido en el token", HttpStatus.UNAUTHORIZED);
-        }
-
-        return this.usuarioService.actualizar(objActualizar, codigo);
-    }
-
-    @Delete("/delete/:cod_usuario")
-    public borrarProducto(@Body() objBorrar: Usuario, @Param() parametros: any): any {
-        const codigo: number = Number(parametros.cod_usuario);
-        if (!isNaN(codigo)) {
-            return this.usuarioService.eliminar(objBorrar, codigo);
-        } else {
-            return new HttpException("fallo al borrar el usuario", HttpStatus.BAD_REQUEST)
-        }
-    }
+  @Delete('/delete/:id')
+  public eliminar(@Param('id') id: number) {
+    return this.usuarioService.eliminar(id);
+  }
 }
