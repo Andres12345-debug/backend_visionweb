@@ -6,6 +6,7 @@ import { AccesosController } from './accesos/accesos.controller';
 import { RegistrosController } from './registros/registros.controller';
 import { AccesosService } from './accesos/accesos.service';
 import { RegistrosService } from './registros/registros.service';
+import { CorreosModule } from './correos/correos.module';
 
 const routes: Routes = [
     {
@@ -19,7 +20,7 @@ const routes: Routes = [
 @Module({
   imports: [
     RouterModule.register(routes),
-    AccesosModule, RegistrosModule],
+    AccesosModule, RegistrosModule, CorreosModule],
     exports: [RouterModule],
     providers: [AccesosService, RegistrosService],
     controllers: [AccesosController, RegistrosController]

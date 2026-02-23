@@ -12,7 +12,7 @@ export class UsuariosController {
         return this.usuarioService.consultar();
     }
 
-    @Get('/perfil')
+   @Get('/perfil')
     public async obtenerMiPerfil(@Req() req: Request): Promise<any> {
         const datosUsuario = (req as any).datosUsuario;
 
@@ -44,7 +44,7 @@ export class UsuariosController {
         return this.usuarioService.actualizar(objActualizar, codigo);
     }
 
-     @Delete("/delete/:cod_usuario")
+    @Delete("/delete/:cod_usuario")
     public borrarProducto(@Body() objBorrar: Usuario, @Param() parametros: any): any {
         const codigo: number = Number(parametros.cod_usuario);
         if (!isNaN(codigo)) {

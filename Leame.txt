@@ -16,7 +16,7 @@
     nest g mo modulos/privado/roles
     nest g s modulos/privado/roles --no-spec
     nest g co modulos/privado/roles --no-spec
-### privados  ######
+### publicos  ######
     nest g mo modulos/publico
     nest g mo modulos/publico/accesos
     nest g s modulos/publico/accesos --no-spec
@@ -25,6 +25,14 @@
     nest g mo modulos/publico/registros
     nest g s modulos/publico/registros --no-spec
     nest g co modulos/publico/registros --no-spec
+    
+    nest g mo modulos/publico/correos
+    nest g s modulos/publico/correos --no-spec
+    nest g co modulos/publico/correos --no-spec
+   
+   
+
+
 ### configuracion del App.Module  ######
     imports: [ConfigModule.forRoot({isGlobal: true,envFilePath:".env"}), ConexionModule, PublicoModule, PrivadoModule],
 #### Creamos config/conexión ### 
