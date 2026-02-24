@@ -30,12 +30,10 @@ export class UsuariosController {
       usuario: req.datosUsuario,
     };
   }
-
   @Post('/agregar')
   public registrarUsuario(@Body() datos: CrearUsuarioDto) {
     return this.usuarioService.registrar(datos);
   }
-
   @Put('/actualizar/:id')
   public actualizar(
     @Param('id') id: number,
