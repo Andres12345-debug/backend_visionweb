@@ -29,6 +29,14 @@
     nest g mo modulos/publico/correos
     nest g s modulos/publico/correos --no-spec
     nest g co modulos/publico/correos --no-spec
+
+    
+###### CREACION DE LOS MODELOS #######
+   	nest g cl modelos/usuario --no-spec
+  	nest g cl modelos/rol --no-spec
+   	nest g cl modelos/acceso --no-spec
+    nest g cl modelos/correos --no-spec
+    
    
    
 

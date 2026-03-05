@@ -1,5 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { Acceso } from 'src/modelos/acceso/acceso';
+import { Correos } from 'src/modelos/correos/correos';
 import { Rol } from 'src/modelos/rol/rol';
 import { Usuario } from 'src/modelos/usuario/usuario';
 import { DataSource } from 'typeorm';
@@ -24,7 +25,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
                         synchronize: true,
                         logging: true,
                         namingStrategy: new SnakeNamingStrategy(),
-                        entities: [Acceso, Rol, Usuario], // Aquí debes agregar tus entidades
+                        entities: [Acceso, Rol, Usuario, Correos], // Aquí debes agregar tus entidades
                     });
 
                     await poolConexion.initialize();

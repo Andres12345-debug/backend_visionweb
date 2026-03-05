@@ -2,21 +2,38 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { ContactoDto } from './dto/contacto.dto';
+import { DataSource, Repository } from 'typeorm';
+import { Correos } from '../../../modelos/correos/correos';
 
 @Injectable()
 export class CorreosService {
 
+  private correosRepo: Repository<Correos>;
+
   constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
-  ) {}
+    private readonly dataSource: DataSource,
+  ) {
+    this.correosRepo = this.dataSource.getRepository(Correos);
+  }
 
   async enviarFormulario(datos: ContactoDto) {
 
+    // 🔥 1️⃣ Guardar en base de datos
+    const nuevoCorreo = this.correosRepo.create({
+      nombre: datos.nombre,
+      email: datos.email,
+      mensaje: datos.mensaje,
+    });
+
+    await this.correosRepo.save(nuevoCorreo);
+
+    // 🔥 2️⃣ Enviar correo
     await this.mailerService.sendMail({
       to: this.configService.get<string>('MAIL_TO'),
       subject: 'Nuevo mensaje desde VisionWeb',
-      replyTo: datos.email, // 🔥 Permite responder al usuario
+      replyTo: datos.email,
       html: `
         <h2>Nuevo mensaje de contacto</h2>
         <p><strong>Nombre:</strong> ${datos.nombre}</p>
@@ -28,6 +45,20 @@ export class CorreosService {
       `,
     });
 
-    return { mensaje: 'Correo enviado correctamente' };
+    return { mensaje: 'Correo enviado y guardado correctamente' };
+  }
+
+  // 🔥 GET TODOS
+  async obtenerCorreos(): Promise<Correos[]> {
+    return this.correosRepo.find({
+      order: { fecha: 'DESC' }
+    });
+  }
+
+  // 🔥 GET POR ID
+  async obtenerCorreoPorId(id: number): Promise<Correos | null> {
+    return this.correosRepo.findOne({
+      where: { id }
+    });
   }
 }
