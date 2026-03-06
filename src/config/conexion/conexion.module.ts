@@ -25,7 +25,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
                         synchronize: true,
                         logging: true,
                         namingStrategy: new SnakeNamingStrategy(),
-                        entities: [Acceso, Rol, Usuario, Correos], // Aquí debes agregar tus entidades
+                        entities: [Acceso, Rol, Usuario, Correos], 
                     });
 
                     await poolConexion.initialize();
