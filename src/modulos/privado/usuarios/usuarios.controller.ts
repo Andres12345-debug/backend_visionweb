@@ -13,7 +13,7 @@ import {
 import { UsuariosService } from './usuarios.service';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 
-@Controller('usuarios')
+@Controller('usuarios') 
 export class UsuariosController {
 
   constructor(private readonly usuarioService: UsuariosService) {}

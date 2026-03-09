@@ -2,7 +2,7 @@ import { Body, Controller, Post, Get, Param, ParseIntPipe } from '@nestjs/common
 import { CorreosService } from './correos.service';
 import { ContactoDto } from './dto/contacto.dto';
 
-@Controller('publico/correo')
+@Controller('correos')
 export class CorreosController {
 
   constructor(private readonly correosService: CorreosService) {}

@@ -7,11 +7,12 @@ import { RegistrosController } from './registros/registros.controller';
 import { AccesosService } from './accesos/accesos.service';
 import { RegistrosService } from './registros/registros.service';
 import { CorreosModule } from './correos/correos.module';
+import { CorreosController } from './correos/correos.controller';
 
 const routes: Routes = [
     {
       path: 'publico',
-      children: [AccesosModule, RegistrosModule
+      children: [AccesosModule, RegistrosModule, CorreosModule
         
       ]
     }
@@ -22,7 +23,7 @@ const routes: Routes = [
     RouterModule.register(routes),
     AccesosModule, RegistrosModule, CorreosModule],
     exports: [RouterModule],
-    providers: [AccesosService, RegistrosService],
-    controllers: [AccesosController, RegistrosController]
+    providers: [AccesosService, RegistrosService, CorreosModule],
+    controllers: [AccesosController, RegistrosController, CorreosController]
 })
 export class PublicoModule {}
