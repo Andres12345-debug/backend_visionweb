@@ -21,9 +21,15 @@ const routes: Routes = [
 @Module({
   imports: [
     RouterModule.register(routes),
-    AccesosModule, RegistrosModule, CorreosModule],
-    exports: [RouterModule],
-    providers: [AccesosService, RegistrosService, CorreosModule],
-    controllers: [AccesosController, RegistrosController, CorreosController]
+    AccesosModule,
+    RegistrosModule,
+    CorreosModule
+  ],
+  exports: [RouterModule],
+  providers: [AccesosService, RegistrosService],
+  controllers: [
+    AccesosController,
+    RegistrosController
+  ]
 })
 export class PublicoModule {}

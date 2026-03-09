@@ -17,4 +17,13 @@ export class Correos {
 
   @CreateDateColumn()
   fecha: Date;
+
+  // 🔹 NUEVO
+  @Column({ default: false })
+  respondido: boolean;
+
+  // 🔹 NUEVO
+  @Column({ type: 'timestamp', nullable: true })
+  fechaRespuesta: Date;
+
 }

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { ContactoDto } from './dto/contacto.dto';
 import { DataSource, Repository } from 'typeorm';
 import { Correos } from '../../../modelos/correos/correos';
+import { ResponderCorreoDto } from './dto/responderCorreo.dto';
 
 @Injectable()
 export class CorreosService {
@@ -60,5 +61,50 @@ export class CorreosService {
     return this.correosRepo.findOne({
       where: { id }
     });
+  }
+
+  async responderCorreo(datos: ResponderCorreoDto) {
+
+    // buscar el correo
+    const correo = await this.correosRepo.findOne({
+      where: { id: datos.id }
+    });
+
+    if (!correo) {
+      throw new Error("Correo no encontrado");
+    }
+
+    // enviar correo
+    await this.mailerService.sendMail({
+
+      to: datos.email,
+      subject: datos.asunto,
+
+      html: `
+      <div style="font-family:Arial,sans-serif">
+        <h2>Respuesta a tu mensaje</h2>
+
+        <p>${datos.mensaje}</p>
+
+        <hr/>
+
+        <small>
+          Este correo fue enviado desde el equipo de Vision Web
+        </small>
+      </div>
+    `
+
+    });
+
+    // 🔹 marcar como respondido
+    correo.respondido = true;
+    correo.fechaRespuesta = new Date();
+
+    await this.correosRepo.save(correo);
+
+    return {
+      mensaje: 'Respuesta enviada correctamente'
+    };
+
   }
 }
