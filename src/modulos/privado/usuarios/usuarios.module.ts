@@ -6,4 +6,4 @@ import { UsuariosController } from './usuarios.controller';
   providers: [UsuariosService],
   controllers: [UsuariosController]
 })
-export class UsuariosModule {}
+export class UsuariosModule {} 

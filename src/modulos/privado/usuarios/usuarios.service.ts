@@ -24,7 +24,7 @@ export class UsuariosService {
     });
 
     return !!existe;
-  }
+  } 
 
   // 🔹 Registrar
   public async registrar(datos: CrearUsuarioDto): Promise<any> {
