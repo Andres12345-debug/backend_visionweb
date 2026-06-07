@@ -2,20 +2,24 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { hashSync } from 'bcryptjs';
 import { Acceso } from 'src/modelos/acceso/acceso';
 import { Usuario } from 'src/modelos/usuario/usuario';
+import { Rol } from 'src/modelos/rol/rol';
 import { DataSource, Repository } from 'typeorm';
 import { ACCESO_SQL } from './registro_sql';
 import GenerarToken from 'src/utilities/shared/generarToken';
 import { RegistroDto } from './dto/registroDto';
+import { ROLES } from 'src/middleware/seguridad/seguridad/helpers/rol.helper';
 
 @Injectable()
 export class RegistrosService {
 
   private usuarioRepositorio: Repository<Usuario>;
   private AccesoRepositorio: Repository<Acceso>;
+  private rolRepositorio: Repository<Rol>;
 
   constructor(private poolConexion: DataSource) {
     this.usuarioRepositorio = poolConexion.getRepository(Usuario);
     this.AccesoRepositorio = poolConexion.getRepository(Acceso);
+    this.rolRepositorio = poolConexion.getRepository(Rol);
   }
 
   public async nuevoUsuario(datosRegistro: RegistroDto): Promise<any> {
@@ -39,13 +43,26 @@ export class RegistrosService {
         );
       }
 
+      // El registro público siempre crea usuarios con rol "clientes":
+      // asignar administradores/supervisores es tarea de un administrador desde /privado/usuarios
+      const rolCliente = await this.rolRepositorio.findOne({
+        where: { nombreRol: ROLES.CLIENTE }
+      });
+
+      if (!rolCliente) {
+        throw new HttpException(
+          'El rol de clientes no está configurado',
+          HttpStatus.CONFLICT
+        );
+      }
+
       // 2️⃣ Crear Usuario (INCLUIMOS CAMPOS NOT NULL)
       const nuevoUsuario = this.usuarioRepositorio.create({
         nombreUsuario: datosRegistro.nombreUsuario,
         telefonoUsuario: datosRegistro.telefonoUsuario,
         fechaNacimientoUsuario: datosRegistro.fechaNacimientoUsuario,
         generoUsuario: datosRegistro.generoUsuario,
-        codRol: datosRegistro.codRol
+        codRol: rolCliente.codRol
       });
 
       const usuarioGuardado = await queryRunner.manager.save(nuevoUsuario);

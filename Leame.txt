@@ -1,5 +1,7 @@
 ###### Creamos el proyecto ######
     nest new backend_visionweb
+
+    nest new ventanillaUnica
 ###### installacion de paquetes #######
     npm i typeorm
     npm i @nestjs/config
@@ -7,7 +9,6 @@
     npm install jsonwebtoken
     npm i @types/jsonwebtoken --save-dev
 ### privados  ######
-    nest g mo modulos/privado
     nest g mo modulos/privado
     nest g mo modulos/privado/usuarios
     nest g s modulos/privado/usuarios --no-spec

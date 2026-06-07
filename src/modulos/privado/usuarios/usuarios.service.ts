@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Usuario } from 'src/modelos/usuario/usuario';
 import { DataSource, Repository } from 'typeorm';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
+import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 
 @Injectable()
 export class UsuariosService {
@@ -49,7 +50,7 @@ export class UsuariosService {
   }
 
   // 🔹 Actualizar
-  public async actualizar(datos: CrearUsuarioDto, id: number) {
+  public async actualizar(datos: ActualizarUsuarioDto, id: number) {
 
     const usuario = await this.usuarioRepository.findOneBy({
       codUsuario: id

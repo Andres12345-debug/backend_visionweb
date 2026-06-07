@@ -29,10 +29,6 @@ export class RegistroDto {
   @IsNotEmpty()
   correoUsuario!: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  codRol!: number;
-
   // Acceso
   @IsString()
   @IsNotEmpty()

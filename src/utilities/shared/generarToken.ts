@@ -12,7 +12,7 @@ class GenerarToken{
             telefono: datosSesion.telefono_usuario,
             access: datosSesion.nombre_acceso
 
-        },"laClaveSecreta", {expiresIn: "8h"});
+        }, process.env.JWT_SECRET ?? "laClaveSecreta", { expiresIn: (process.env.JWT_EXPIRES_IN ?? "8h") as any });
     
         return token;
 

@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Clientes } from 'src/modelos/clientes/clientes';
 import { Repository } from 'typeorm';
 import { CrearClienteDto } from './dto/clientes.dto';
+import { ActualizarClienteDto } from './dto/actualizar-cliente.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -44,7 +45,7 @@ export class ClientesService {
         };
     }
      // 🔹 Actualizar
-      public async actualizar(datos: CrearClienteDto, id: number) {
+      public async actualizar(datos: ActualizarClienteDto, id: number) {
     
         const usuario = await this.clientesRepository.findOneBy({
           codCliente: id

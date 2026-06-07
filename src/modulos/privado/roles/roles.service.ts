@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Rol } from 'src/modelos/rol/rol';
 import { DataSource, Repository } from 'typeorm';
 import { CrearRolDto } from './dto/crear-rol.dto';
+import { ActualizarRolDto } from './dto/actualizar-rol.dto';
 
 @Injectable()
 export class RolesService {
@@ -69,7 +70,7 @@ export class RolesService {
   }
 
   // 🔹 Actualizar
-  public async actualizar(datos: CrearRolDto, id: number) {
+  public async actualizar(datos: ActualizarRolDto, id: number) {
 
     const rol = await this.rolesRepository.findOneBy({ codRol: id });
 
