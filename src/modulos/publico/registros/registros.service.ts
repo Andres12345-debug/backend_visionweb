@@ -32,8 +32,8 @@ export class RegistrosService {
     try {
 
       // 1️⃣ Verificar si usuario ya existe
-      const usuarioExiste = await this.AccesoRepositorio.findOne({
-        where: { nombreAcceso: datosRegistro.nombreAcceso }
+      const usuarioExiste = await this.usuarioRepositorio.findOne({
+        where: { correoUsuario: datosRegistro.correoUsuario }
       });
 
       if (usuarioExiste) {
@@ -59,6 +59,7 @@ export class RegistrosService {
       // 2️⃣ Crear Usuario (INCLUIMOS CAMPOS NOT NULL)
       const nuevoUsuario = this.usuarioRepositorio.create({
         nombreUsuario: datosRegistro.nombreUsuario,
+        correoUsuario: datosRegistro.correoUsuario,
         telefonoUsuario: datosRegistro.telefonoUsuario,
         fechaNacimientoUsuario: datosRegistro.fechaNacimientoUsuario,
         generoUsuario: datosRegistro.generoUsuario,
@@ -72,7 +73,6 @@ export class RegistrosService {
 
       const nuevoAcceso = this.AccesoRepositorio.create({
         codUsuario: usuarioGuardado.codUsuario,
-        nombreAcceso: datosRegistro.nombreAcceso,
         claveAcceso: claveCifrada
       });
 

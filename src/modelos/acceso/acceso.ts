@@ -5,8 +5,6 @@ import { Usuario } from "../usuario/usuario";
 export class Acceso {
     @PrimaryColumn({ type: "integer", nullable: false, name: "cod_usuario" })
     public codUsuario!: number;
-    @Column({ type: "varchar", length: 250, nullable: false, name: "nombre_acceso" })
-    public nombreAcceso!: string;
     @Column({ type: "varchar", length: 500, nullable: false, name: "clave_acceso" })
     public claveAcceso!: string;
 

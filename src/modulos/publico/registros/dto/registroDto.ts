@@ -32,9 +32,5 @@ export class RegistroDto {
   // Acceso
   @IsString()
   @IsNotEmpty()
-  nombreAcceso!: string;
-
-  @IsString()
-  @IsNotEmpty()
   claveAcceso!: string;
 }

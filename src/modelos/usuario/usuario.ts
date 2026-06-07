@@ -10,6 +10,8 @@ export class Usuario {
     public codRol!: number;
     @Column({ type: "varchar", length: 250, nullable: false, name: "nombre_usuario" })
     public nombreUsuario!: string;
+    @Column({ type: "varchar", length: 250, nullable: false, unique: true, name: "correo_usuario" })
+    public correoUsuario!: string;
     @Column({ type: "date", nullable: false, name: "fecha_nacimiento_usuario" })
     public fechaNacimientoUsuario!: Date;
     @Column({ type: "varchar", length: 250, nullable: false, name: "telefono_usuario" })
