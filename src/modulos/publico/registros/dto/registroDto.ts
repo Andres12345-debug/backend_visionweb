@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsNumber,
   IsDateString,
+  IsOptional,
 } from 'class-validator';
 
 export class RegistroDto {
@@ -24,6 +25,11 @@ export class RegistroDto {
   @IsString()
   @IsNotEmpty()
   telefonoUsuario!: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  empresaUsuario?: string;
 
   @IsEmail()
   @IsNotEmpty()

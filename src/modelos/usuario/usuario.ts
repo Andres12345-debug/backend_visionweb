@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Acceso } from "../acceso/acceso";
 import { Rol } from "../rol/rol";
+import { ClienteServicios } from "../cliente_servicios/cliente_servicios";
 
 @Entity("usuarios", { schema: "public" })
 export class Usuario {
@@ -18,6 +19,8 @@ export class Usuario {
     public telefonoUsuario!: string;
     @Column({ type: "integer", nullable: false, name: "genero_usuario" })
     public generoUsuario!: number;
+    @Column({ type: "varchar", length: 250, nullable: true, name: "empresa_usuario" })
+    public empresaUsuario!: string;
 
     // Relación con Acceso
     @OneToOne(() => Acceso, (objAcceso) => objAcceso.usuario)
@@ -32,5 +35,8 @@ export class Usuario {
     @JoinColumn({ name: "cod_rol", referencedColumnName: "codRol" })
     public codRolU?: Rol;
 
+    // Relación con ClienteServicios (contratos de servicios cuando el usuario tiene rol "clientes")
+    @OneToMany(() => ClienteServicios, (objClienteServicio) => objClienteServicio.usuario)
+    public clienteServicios?: ClienteServicios[];
 
 }

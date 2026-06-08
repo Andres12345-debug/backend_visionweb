@@ -26,5 +26,6 @@ import { CorreosController } from './correos.controller';
   ],
   controllers: [CorreosController],
   providers: [CorreosService],
+  exports: [CorreosService],
 })
 export class CorreosModule {}

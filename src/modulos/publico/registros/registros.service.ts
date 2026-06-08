@@ -63,6 +63,7 @@ export class RegistrosService {
         telefonoUsuario: datosRegistro.telefonoUsuario,
         fechaNacimientoUsuario: datosRegistro.fechaNacimientoUsuario,
         generoUsuario: datosRegistro.generoUsuario,
+        empresaUsuario: datosRegistro.empresaUsuario,
         codRol: rolCliente.codRol
       });
 

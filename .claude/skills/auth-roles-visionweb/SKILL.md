@@ -53,7 +53,7 @@ Reglas de orden:
 | `usuarios` | CRUD completo | listar/crear/actualizar (no eliminar) | solo `/perfil` propio |
 | `roles` | CRUD completo | sin acceso | sin acceso |
 | `clientes` | CRUD completo | listar/crear/actualizar (no eliminar) | sin acceso |
-| `correos` (listar/ver/responder) | acceso completo | acceso completo | sin acceso (`/contacto` es público) |
+| `correos` (listar/ver/responder) | acceso completo | sin acceso | sin acceso (`/contacto` es público) |
 
 Patrón general: **eliminar** y operaciones sensibles → solo `ADMINISTRADOR`; lectura/creación/edición operativa → `ADMINISTRADOR` + `SUPERVISOR`; el rol `CLIENTE` solo ve sus propios datos vía endpoints tipo `/perfil`.
 

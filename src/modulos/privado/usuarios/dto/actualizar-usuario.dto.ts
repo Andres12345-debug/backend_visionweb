@@ -29,4 +29,9 @@ export class ActualizarUsuarioDto {
   @IsOptional()
   @IsNumber()
   generoUsuario?: number;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  empresaUsuario?: string;
 }

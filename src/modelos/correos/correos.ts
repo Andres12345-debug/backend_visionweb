@@ -4,26 +4,26 @@ import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeor
 export class Correos {
 
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 100 })
-  nombre: string;
+  nombre!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column({ type: 'text' })
-  mensaje: string;
+  mensaje!: string;
 
   @CreateDateColumn()
-  fecha: Date;
+  fecha!: Date;
 
   // 🔹 NUEVO
   @Column({ default: false })
-  respondido: boolean;
+  respondido!: boolean;
 
   // 🔹 NUEVO
   @Column({ type: 'timestamp', nullable: true })
-  fechaRespuesta: Date;
+  fechaRespuesta!: Date;
 
 }

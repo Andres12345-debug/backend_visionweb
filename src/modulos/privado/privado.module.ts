@@ -2,13 +2,15 @@ import { Module } from '@nestjs/common';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { RolesModule } from './roles/roles.module';
 import { RouterModule, Routes } from '@nestjs/core';
-import { ClientesModule } from './clientes/clientes.module';
+import { CorreosModule } from './correos/correos.module';
+import { ServiciosModule } from './servicios/servicios.module';
+import { ClienteServiciosModule } from './cliente_servicios/cliente_servicios.module';
 
 
 const routes: Routes = [
   {
     path: 'privado',
-    children: [UsuariosModule, RolesModule, ClientesModule]
+    children: [UsuariosModule, RolesModule, CorreosModule, ServiciosModule, ClienteServiciosModule]
   }
 ];
 @Module({
@@ -16,7 +18,9 @@ const routes: Routes = [
     UsuariosModule,
     RolesModule,
     RouterModule.register(routes),
-    ClientesModule],
+    CorreosModule,
+    ServiciosModule,
+    ClienteServiciosModule],
   exports: [RouterModule]
 })
 export class PrivadoModule { }

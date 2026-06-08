@@ -23,6 +23,7 @@ Crea un `Usuario` + sus credenciales (`Acceso`) en una sola transacción. **Siem
   "fechaNacimientoUsuario": "2000-08-18",
   "generoUsuario": 1,
   "telefonoUsuario": "3007538453",
+  "empresaUsuario": "Acme S.A.S.",
   "correoUsuario": "andres@example.com",
   "claveAcceso": "Keillter@30"
 }
@@ -34,8 +35,11 @@ Crea un `Usuario` + sus credenciales (`Acceso`) en una sola transacción. **Siem
 | `fechaNacimientoUsuario` | `string` con formato fecha ISO (`@IsDateString`) | Ej. `"2000-08-18"` |
 | `generoUsuario` | `number`, no vacío | Código numérico de género (catálogo propio del frontend) |
 | `telefonoUsuario` | `string`, no vacío | |
+| `empresaUsuario` | `string`, opcional | Nombre de la empresa que el usuario representa. Si el cliente es una persona natural sin empresa, puede omitirse — queda `null`. Se puede editar después con `PUT /usuarios/actualizar/:id` (`ActualizarUsuarioDto.empresaUsuario`) |
 | `correoUsuario` | `string`, formato email (`@IsEmail`) | **Único** — es el identificador de login. Si ya existe, el backend responde `406 Not Acceptable` ("El usuario ya existe") |
 | `claveAcceso` | `string`, no vacío | Se guarda cifrada con `bcryptjs` (`hashSync`, 10 rondas). El frontend debe aplicar sus propias reglas de fortaleza antes de enviarla |
+
+> 🆕 `empresaUsuario` reemplaza el viejo enfoque de tener una entidad `Clientes` (CRM) separada — ahora la empresa vive directo en la cuenta del usuario y se usa para mostrarla junto a sus contratos (`cliente-servicios`, ver más abajo).
 
 > ⚠️ **No** se envía `nombreAcceso` — ese campo fue eliminado (era redundante con `nombreUsuario`). El login es por `correoUsuario`, no por un "nombre de acceso" separado.
 
@@ -121,6 +125,8 @@ Tanto registro como login devuelven un **JWT** generado por `GenerarToken.proces
 | `correo` | `correo_usuario` |
 
 > Nota: ya **no** existe el claim `access` (antes traía `nombre_acceso`). Si el frontend lo leía para mostrar algo, debe migrar a `correo`.
+
+> 🆕 `empresaUsuario` **no** viaja en el token (para no inflarlo) — pídela vía `GET /usuarios/perfil`. Esa misma empresa se incluye en cada contrato que devuelve `GET /cliente-servicios/mios` (relación `usuario.empresaUsuario`), para que el frontend pueda mostrar "tus contratos activos con [empresa]" sin pedidos extra.
 
 ### Cómo usarlo
 

@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsDateString,
+  IsOptional,
 } from 'class-validator';
 
 export class CrearUsuarioDto {
@@ -23,4 +24,9 @@ export class CrearUsuarioDto {
 
   @IsNumber()
   generoUsuario!: number;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  empresaUsuario?: string;
 }
