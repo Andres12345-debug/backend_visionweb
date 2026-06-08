@@ -94,6 +94,8 @@ Si ves código o ejemplos viejos con `nombreAcceso`/`nombre_acceso`, están desa
 
 📄 Guía completa de registro/login con ejemplos de petición/respuesta para el frontend: [frontend-auth-guide.md](frontend-auth-guide.md).
 
+📄 Guía de los módulos `servicios` y `cliente-servicios` (catálogo de servicios y contratos de cliente) con ejemplos de petición/respuesta para el frontend: [servicios-guide.md](servicios-guide.md).
+
 ## Registro público (`/publico/registros`)
 
 El alta pública SIEMPRE asigna el rol `clientes` automáticamente (busca el `codRol` por nombre vía `ROLES.CLIENTE` en `Rol`); el cliente **no** puede elegir su propio rol vía `codRol` en el DTO — esto evita que cualquiera se autoasigne `administradores`. Los roles `administradores`/`supervisores` solo se asignan desde `/privado/usuarios` por un administrador.
