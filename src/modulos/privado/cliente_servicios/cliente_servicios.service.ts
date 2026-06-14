@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { ClienteServicios } from 'src/modelos/cliente_servicios/cliente_servicios';
 import { Usuario } from 'src/modelos/usuario/usuario';
+import { Servicios } from 'src/modelos/servicios/servicios';
 import { CrearClienteServicioDto } from './dto/crear-cliente-servicio.dto';
 import { ActualizarClienteServicioDto } from './dto/actualizar-cliente-servicio.dto';
 
@@ -13,6 +14,8 @@ export class ClienteServiciosService {
         private readonly clienteServiciosRepository: Repository<ClienteServicios>,
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario>,
+        @InjectRepository(Servicios)
+        private readonly serviciosRepository: Repository<Servicios>,
     ) { }
 
     // 🔹 Consultar todos
@@ -55,6 +58,12 @@ export class ClienteServiciosService {
 
         if (!usuario) {
             throw new HttpException('El usuario indicado no existe', HttpStatus.NOT_FOUND);
+        }
+
+        const servicio = await this.serviciosRepository.findOneBy({ codServicio: datos.codServicio });
+
+        if (!servicio) {
+            throw new HttpException('El servicio indicado no existe', HttpStatus.NOT_FOUND);
         }
 
         const nuevoClienteServicio = this.clienteServiciosRepository.create({

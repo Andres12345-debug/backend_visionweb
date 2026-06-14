@@ -32,6 +32,5 @@ export class ActualizarUsuarioDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   empresaUsuario?: string;
 }

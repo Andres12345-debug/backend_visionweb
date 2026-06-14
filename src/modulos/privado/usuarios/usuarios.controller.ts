@@ -11,6 +11,7 @@ import {
 import { UsuariosService } from './usuarios.service';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
+import { ActualizarPerfilDto } from './dto/actualizar-perfil.dto';
 import { AuthGuard } from 'src/middleware/seguridad/seguridad/guards/auth.guard';
 import { RolesGuard } from 'src/middleware/seguridad/seguridad/guards/roles.guard';
 import { Roles } from 'src/middleware/seguridad/seguridad/decoradores/roles.decorator';
@@ -33,8 +34,16 @@ export class UsuariosController {
   public async obtenerMiPerfil(@UsuarioActual() usuario: any) {
     return {
       mensaje: 'Perfil obtenido correctamente',
-      usuario,
+      usuario: await this.usuarioService.consultarPerfil(usuario.id),
     };
+  }
+
+  @Put('/perfil/actualizar')
+  public actualizarMiPerfil(
+    @UsuarioActual() usuario: any,
+    @Body() datos: ActualizarPerfilDto
+  ) {
+    return this.usuarioService.actualizarPerfil(usuario.id, datos);
   }
 
   @Post('/agregar')

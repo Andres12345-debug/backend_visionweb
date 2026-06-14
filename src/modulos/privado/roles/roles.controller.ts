@@ -38,7 +38,7 @@ export class RolesController {
     return this.rolesService.consultarUno(id);
   }
 
-  @Put('/update/:id')
+  @Put('/actualizar/:id')
   public actualizar(
     @Param('id') id: number,
     @Body() datos: ActualizarRolDto

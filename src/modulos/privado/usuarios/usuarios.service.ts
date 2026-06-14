@@ -1,21 +1,23 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from 'src/modelos/usuario/usuario';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
+import { ActualizarPerfilDto } from './dto/actualizar-perfil.dto';
 
 @Injectable()
 export class UsuariosService {
 
-  private usuarioRepository: Repository<Usuario>;
-
-  constructor(private poolConexion: DataSource) {
-    this.usuarioRepository = poolConexion.getRepository(Usuario);
-  }
+  constructor(
+    @InjectRepository(Usuario) private readonly usuarioRepository: Repository<Usuario>,
+  ) {}
 
   // 🔹 Consultar todos
   public async consultar(): Promise<Usuario[]> {
-    return this.usuarioRepository.find();
+    return this.usuarioRepository.find({
+      relations: ['codRolU']
+    });
   }
 
   // 🔹 Verificar si existe
@@ -67,6 +69,55 @@ export class UsuariosService {
 
     return {
       mensaje: 'Usuario actualizado correctamente'
+    };
+  }
+
+  // 🔹 Consultar perfil del usuario autenticado
+  public async consultarPerfil(id: number): Promise<any> {
+
+    const usuario = await this.usuarioRepository.findOne({
+      where: { codUsuario: id },
+      relations: ['codRolU']
+    });
+
+    if (!usuario) {
+      throw new HttpException(
+        'Usuario no encontrado',
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    return {
+      codUsuario: usuario.codUsuario,
+      nombreUsuario: usuario.nombreUsuario,
+      correoUsuario: usuario.correoUsuario,
+      fechaNacimientoUsuario: usuario.fechaNacimientoUsuario,
+      telefonoUsuario: usuario.telefonoUsuario,
+      generoUsuario: usuario.generoUsuario,
+      empresaUsuario: usuario.empresaUsuario,
+      codRol: usuario.codRol,
+      rolNombre: usuario.codRolU?.nombreRol
+    };
+  }
+
+  // 🔹 Actualizar perfil del usuario autenticado
+  public async actualizarPerfil(id: number, datos: ActualizarPerfilDto) {
+
+    const usuario = await this.usuarioRepository.findOneBy({
+      codUsuario: id
+    });
+
+    if (!usuario) {
+      throw new HttpException(
+        'Usuario no encontrado',
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    await this.usuarioRepository.update(id, datos);
+
+    return {
+      mensaje: 'Perfil actualizado correctamente'
     };
   }
 

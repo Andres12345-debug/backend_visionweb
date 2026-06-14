@@ -2,19 +2,12 @@ import { Module } from '@nestjs/common';
 import { AccesosModule } from './accesos/accesos.module';
 import { RegistrosModule } from './registros/registros.module';
 import { RouterModule, Routes } from '@nestjs/core';
-import { AccesosController } from './accesos/accesos.controller';
-import { RegistrosController } from './registros/registros.controller';
-import { AccesosService } from './accesos/accesos.service';
-import { RegistrosService } from './registros/registros.service';
 import { CorreosModule } from './correos/correos.module';
-import { CorreosController } from './correos/correos.controller';
 
 const routes: Routes = [
     {
       path: 'publico',
-      children: [AccesosModule, RegistrosModule, CorreosModule
-        
-      ]
+      children: [AccesosModule, RegistrosModule, CorreosModule]
     }
   ]
 
@@ -25,11 +18,6 @@ const routes: Routes = [
     RegistrosModule,
     CorreosModule
   ],
-  exports: [RouterModule],
-  providers: [AccesosService, RegistrosService],
-  controllers: [
-    AccesosController,
-    RegistrosController
-  ]
+  exports: [RouterModule]
 })
 export class PublicoModule {}

@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { hashSync } from 'bcryptjs';
 import { Acceso } from 'src/modelos/acceso/acceso';
 import { Usuario } from 'src/modelos/usuario/usuario';
@@ -12,15 +13,12 @@ import { ROLES } from 'src/middleware/seguridad/seguridad/helpers/rol.helper';
 @Injectable()
 export class RegistrosService {
 
-  private usuarioRepositorio: Repository<Usuario>;
-  private AccesoRepositorio: Repository<Acceso>;
-  private rolRepositorio: Repository<Rol>;
-
-  constructor(private poolConexion: DataSource) {
-    this.usuarioRepositorio = poolConexion.getRepository(Usuario);
-    this.AccesoRepositorio = poolConexion.getRepository(Acceso);
-    this.rolRepositorio = poolConexion.getRepository(Rol);
-  }
+  constructor(
+    private readonly poolConexion: DataSource,
+    @InjectRepository(Usuario) private readonly usuarioRepositorio: Repository<Usuario>,
+    @InjectRepository(Acceso) private readonly AccesoRepositorio: Repository<Acceso>,
+    @InjectRepository(Rol) private readonly rolRepositorio: Repository<Rol>,
+  ) {}
 
   public async nuevoUsuario(datosRegistro: RegistroDto): Promise<any> {
 
@@ -101,6 +99,10 @@ export class RegistrosService {
       await queryRunner.rollbackTransaction();
 
       console.error("ERROR REGISTRO:", error);
+
+      if (error instanceof HttpException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Fallo al registrar el usuario',

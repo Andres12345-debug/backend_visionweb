@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Correos } from '../../../modelos/correos/correos';
 import { CorreosService } from './correos.service';
 import { CorreosController } from './correos.controller';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Correos]),
     MailerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({

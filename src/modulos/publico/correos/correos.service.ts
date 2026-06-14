@@ -1,23 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { ContactoDto } from './dto/contacto.dto';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Correos } from '../../../modelos/correos/correos';
 import { ResponderCorreoDto } from './dto/responderCorreo.dto';
 
 @Injectable()
 export class CorreosService {
 
-  private correosRepo: Repository<Correos>;
-
   constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
-    private readonly dataSource: DataSource,
-  ) {
-    this.correosRepo = this.dataSource.getRepository(Correos);
-  }
+    @InjectRepository(Correos) private readonly correosRepo: Repository<Correos>,
+  ) {}
 
   async enviarFormulario(datos: ContactoDto) {
 
@@ -71,7 +68,7 @@ export class CorreosService {
     });
 
     if (!correo) {
-      throw new Error("Correo no encontrado");
+      throw new HttpException('Correo no encontrado', HttpStatus.NOT_FOUND);
     }
 
     // enviar correo

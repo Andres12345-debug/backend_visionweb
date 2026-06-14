@@ -35,11 +35,9 @@ export class ActualizarClienteServicioDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   urlContrato?: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   observaciones?: string;
 }

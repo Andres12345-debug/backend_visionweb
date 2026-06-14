@@ -6,24 +6,25 @@ import {
   IsOptional,
 } from 'class-validator';
 
-export class CrearUsuarioDto {
+export class ActualizarPerfilDto {
 
-  @IsNumber()
-  codRol!: number;
-
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  nombreUsuario!: string;
+  nombreUsuario?: string;
 
+  @IsOptional()
   @IsDateString()
-  fechaNacimientoUsuario!: string;
+  fechaNacimientoUsuario?: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  telefonoUsuario!: string;
+  telefonoUsuario?: string;
 
+  @IsOptional()
   @IsNumber()
-  generoUsuario!: number;
+  generoUsuario?: number;
 
   @IsOptional()
   @IsString()

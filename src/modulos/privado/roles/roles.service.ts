@@ -1,17 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Rol } from 'src/modelos/rol/rol';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CrearRolDto } from './dto/crear-rol.dto';
 import { ActualizarRolDto } from './dto/actualizar-rol.dto';
 
 @Injectable()
 export class RolesService {
 
-  private rolesRepository: Repository<Rol>;
-
-  constructor(private poolConexion: DataSource) {
-    this.rolesRepository = poolConexion.getRepository(Rol);
-  }
+  constructor(
+    @InjectRepository(Rol) private readonly rolesRepository: Repository<Rol>,
+  ) {}
 
   // 🔹 Consultar todos
   public async consultar(): Promise<Rol[]> {

@@ -1,22 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { compareSync } from 'bcryptjs';
 import { Acceso } from 'src/modelos/acceso/acceso';
 import { Usuario } from 'src/modelos/usuario/usuario';
 import GenerarToken from 'src/utilities/shared/generarToken';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ACCESO_SQL } from '../registros/registro_sql';
 import { LoginDto } from './dto/accesoDto';
 
 @Injectable()
 export class AccesosService {
 
-    private accesoRepository: Repository<Acceso>;
-    private usuarioRepository: Repository<Usuario>;
-
-    constructor(private poolConexion: DataSource) {
-        this.accesoRepository = poolConexion.getRepository(Acceso);
-        this.usuarioRepository = poolConexion.getRepository(Usuario);
-    }
+    constructor(
+        @InjectRepository(Acceso) private readonly accesoRepository: Repository<Acceso>,
+        @InjectRepository(Usuario) private readonly usuarioRepository: Repository<Usuario>,
+    ) {}
 
     public async sesion(datosLogin: LoginDto): Promise<any> {
 
