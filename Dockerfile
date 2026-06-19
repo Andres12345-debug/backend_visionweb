@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Copiar dependencias
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copiar código fuente
 COPY . .
@@ -17,14 +17,19 @@ RUN npm run build
 # ---------- ETAPA 2: PRODUCCIÓN ----------
 FROM node:20-alpine
 
+ENV NODE_ENV=production
+
 WORKDIR /app
 
 # Copiar solo dependencias necesarias
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 # Copiar solo el build compilado
 COPY --from=builder /app/dist ./dist
+
+# Ejecutar como usuario no-root
+USER node
 
 # Exponer puerto (tu proyecto usa 3550)
 EXPOSE 3550
