@@ -3,11 +3,13 @@ import { AccesosModule } from './accesos/accesos.module';
 import { RegistrosModule } from './registros/registros.module';
 import { RouterModule, Routes } from '@nestjs/core';
 import { CorreosModule } from './correos/correos.module';
+import { AsistenteModule } from './asistente/asistente.module';
+import { TelegramModule } from './telegram/telegram.module';
 
 const routes: Routes = [
     {
       path: 'publico',
-      children: [AccesosModule, RegistrosModule, CorreosModule]
+      children: [AccesosModule, RegistrosModule, CorreosModule, AsistenteModule]
     }
   ]
 
@@ -16,7 +18,9 @@ const routes: Routes = [
     RouterModule.register(routes),
     AccesosModule,
     RegistrosModule,
-    CorreosModule
+    CorreosModule,
+    AsistenteModule,
+    TelegramModule
   ],
   exports: [RouterModule]
 })

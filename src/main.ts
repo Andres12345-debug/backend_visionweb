@@ -1,6 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { setDefaultResultOrder } from 'dns';
+
+// Evita timeouts al llamar APIs externas (ej. Telegram) en redes donde IPv6 no tiene ruta de salida
+setDefaultResultOrder('ipv4first');
 
 async function bootstrap() {
   const puerto =

@@ -6,6 +6,7 @@ import { PublicoModule } from './modulos/publico/publico.module';
 import { ConexionModule } from './config/conexion/conexion.module';
 import { ConfigModule } from '@nestjs/config';
 import { RolesModule } from './modulos/privado/roles/roles.module';
+import { ConocimientoModule } from './modulos/privado/conocimiento/conocimiento.module';
 import { SeedService } from './config/seed.service';
 
 @Module({
@@ -14,7 +15,8 @@ import { SeedService } from './config/seed.service';
     ConexionModule,
     PublicoModule,
     PrivadoModule,
-    RolesModule // 👈 importante
+    RolesModule, // 👈 importante
+    ConocimientoModule
   ],
   controllers: [AppController],
   providers: [AppService, SeedService], // 👈 agregar aquí
